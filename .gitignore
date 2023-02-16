@@ -162,6 +162,6 @@ dist
 
 ## Images Folder ##
 
-.images/
+images/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
