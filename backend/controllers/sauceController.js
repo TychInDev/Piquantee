@@ -4,8 +4,6 @@ const Sauce = require("../models/sauceModel");
 // Import du package fs
 const fs = require("fs");
 
-// Verifier les messages erreur et succes ( node )
-
 // Création d'une sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);

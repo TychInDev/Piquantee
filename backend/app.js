@@ -1,9 +1,11 @@
+// Import des modules
 const express = require("express");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
 
+// Import des controllers et des routes
 const userController = require("./controllers/userController");
 const userRoutes = require("./routes/userRoute");
 
@@ -12,7 +14,7 @@ const sauceRoutes = require("./routes/sauceRoute");
 
 const app = express();
 
-// Ajouter les middlewares d'autorisation avant les routes de l'API
+// Utilisation de Helmet et cors 
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(
   cors({
@@ -20,10 +22,11 @@ app.use(
   })
 );
 
-// Utiliser express.urlencoded() au lieu de bodyParser.urlencoded()
+// Utilisation de urlencoded 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Connexion à la base de données
 mongoose
   .connect(
     "mongodb+srv://admin:admin@hottakes.ofj0icp.mongodb.net/?retryWrites=true&w=majority",
@@ -39,7 +42,7 @@ mongoose
     console.log("Database connection error: " + err.message);
   });
 
-// Configurer CORS
+// Configuration de CORS
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -53,6 +56,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// Utilisation des routes
 app.use("/api/auth", userRoutes);
 app.use("/api/sauces", sauceRoutes);
 app.use("/images", express.static(path.join(__dirname, "images")));
