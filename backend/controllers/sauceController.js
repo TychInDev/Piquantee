@@ -78,7 +78,7 @@ exports.deleteSauce = (req, res, next) => {
 
 // Gestion des likes et dislikes ( reduire le code )
 
-exports.likeSauce = (req, res, next) => {
+exports.manageRating = (req, res, next) => {
   if (req.body.like === 1) {
     Sauce.updateOne(
       { _id: req.params.id },
