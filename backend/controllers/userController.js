@@ -13,21 +13,32 @@ exports.signup = (req, res, next) => {
   // Conversion de l'email en minuscules
   const email = req.body.email.toLowerCase();
 
-  bcrypt.hash(req.body.password, 10).then((hash) => {
-    const user = new User({
-      email: email,
-      password: hash,
-    });
-    user
-      .save()
-      .then((result) => {
-        res.status(201).json({ message: "Utilisateur créé !" });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err });
+  User.findOne({ email: email })
+    .then((existingUser) => {
+      if (existingUser) {
+        return res.status(400).json({ error: "Adresse e-mail invalide" });
+      }
+
+      bcrypt.hash(req.body.password, 10).then((hash) => {
+        const user = new User({
+          email: email,
+          password: hash,
+        });
+        user
+          .save()
+          .then((result) => {
+            res.status(201).json({ message: "Utilisateur créé !" });
+          })
+          .catch((err) => {
+            res.status(500).json({ error: err });
+          });
       });
-  });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: error });
+    });
 };
+
 
 // Connexion d'un utilisateur
 exports.login = (req, res, next) => {
