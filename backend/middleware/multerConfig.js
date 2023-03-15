@@ -1,7 +1,8 @@
-// Import de multer
+// Import des modules
 const multer = require('multer');
+const fs = require('fs');
 
-// Définition des fichiers 
+// Définition des fichiers
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
@@ -11,13 +12,17 @@ const MIME_TYPES = {
 // Configuration du stockage
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'images');
+    const dir = 'images';
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+    callback(null, dir);
   },
   filename: (req, file, callback) => {
     const extension = MIME_TYPES[file.mimetype];
-    callback(null, + Date.now() + '.' + extension);
+    callback(null, Date.now() + '.' + extension);
   }
 });
 
-// Export de multer 
+// Export de multer
 module.exports = multer({storage: storage}).single('image');
